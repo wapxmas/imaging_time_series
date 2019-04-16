@@ -1,15 +1,17 @@
 # Plot
 import matplotlib
 import matplotlib.pyplot as plt
+import math
 
 # GIF
 from moviepy.editor import VideoClip
 from moviepy.video.io.bindings import mplfig_to_npimage
 
-from tools import
+from tools import create_time_serie, cos_sum, tabulate
+from gramian_angular_field import transform
 
 # Jupyter
-%matplotlib inline
+# %matplotlib inline
 
 # Option to write gif
 write_gif = False
@@ -34,20 +36,21 @@ iteration = 0
 global size_time_serie
 size_time_serie = float(45)
 
+
 def make_frame(time):
     # Timesteps
     global iteration
 
     # Data
-    t, time_serie = create_time_serie(45, 0)
-    gaf, phi, r, scaled_time_serie = gramian_angular_field(time_serie)
+    time_serie = create_time_serie(45, 0)
+    gaf, phi, r, scaled_time_serie = transform(time_serie)
 
     # Set to 0 unkown data at time stamp iteration
-    #t[iteration:] = 0
+    # t[iteration:] = 0
     time_serie[iteration:] = 0
     scaled_time_serie[iteration:] = 0
     phi[iteration:] = math.acos(0)
-    #r[iteration:] = 0
+    # r[iteration:] = 0
     gaf[iteration:, iteration:] = 0
 
     # PLOTS
@@ -64,7 +67,7 @@ def make_frame(time):
     ax_patchwork.clear()
 
     # Original Time series
-    ax_carthesian.plot(t, scaled_time_serie)
+    ax_carthesian.plot(time_serie, scaled_time_serie)
     ax_carthesian.set_title("Scaled Time Serie", fontdict=font)
     ax_carthesian.set_xticklabels([])
 
@@ -91,7 +94,7 @@ if __name__ == "__main__":
     # GIF: Write and visualise
     animation = VideoClip(make_frame, duration=2)
 
-    if(write_gif):
-        animation.write_gif("gramian_angulat_field.gif",fps=20)
+    if write_gif:
+        animation.write_gif("gramian_angular_field.gif", fps=20)
 
     animation.ipython_display(fps=20, loop=True, autoplay=True)
