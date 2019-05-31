@@ -23,5 +23,4 @@ def transform(serie):
 
     # GAF Computation (every term of the matrix)
     gaf = tabulate(phi, phi, cos_sum)
-
     return gaf, phi, r, scaled_serie
